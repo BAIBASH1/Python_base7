@@ -1,0 +1,4 @@
+python-dotenv==1.0.0
+python_telegram_bot==13.10
+pytimeparse==1.1.8
+telegram==0.0.1
