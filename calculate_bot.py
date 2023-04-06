@@ -9,23 +9,23 @@ TG_TOKEN = os.environ['TG_TOKEN']
 
 def parse_time_and_create_countdown(chat_id, question, bot):
     time = parse(question)
-    message = f"Осталось секунд: {time}"
-    chart = render_progressbar(time, 0)
-    message_id = bot.send_message(chat_id, f'{message}\n{chart}')
     bot.create_countdown(
         time,
         notify_progress,
         chat_id=chat_id,
         time=time,
-        bot=bot,
-        message_id=message_id
+        bot=bot
     )
 
 
-def notify_progress(secs_left, chat_id, time, bot, message_id):
+def notify_progress(secs_left, chat_id, time, bot):
     message = f"Осталось секунд: {secs_left}"
     chart = render_progressbar(time, time - secs_left)
-    bot.update_message(chat_id, message_id, f'{message}\n{chart}')
+    global message_id
+    if not (time - secs_left):
+        message_id = bot.send_message(chat_id, f'{message}\n{chart}')
+    else:
+        bot.update_message(chat_id, message_id, f'{message}\n{chart}')
     if not secs_left:
         bot.send_message(chat_id, "Время вышло")
 
