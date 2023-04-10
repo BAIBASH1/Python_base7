@@ -17,14 +17,13 @@ def parse_time_and_create_countdown(chat_id, question, bot):
         bot=bot,
         message_id=message_id
     )
+    bot.create_timer(time, bot.send_message, chat_id=chat_id, message='Время вышло')
 
 
 def notify_progress(secs_left, chat_id, time, bot, message_id):
     message = f"Осталось секунд: {secs_left}"
     chart = render_progressbar(time, time - secs_left)
     bot.update_message(chat_id, message_id, f'{message}\n{chart}')
-    if not secs_left:
-        bot.send_message(chat_id, "Время вышло")
 
 
 def render_progressbar(total, iteration, prefix='', suffix='',
@@ -39,8 +38,8 @@ def render_progressbar(total, iteration, prefix='', suffix='',
 
 def main():
     load_dotenv()
-    TG_TOKEN = os.environ['TG_TOKEN']
-    bot = ptbot.Bot(TG_TOKEN)
+    tg_token = os.environ['TG_TOKEN']
+    bot = ptbot.Bot(tg_token)
     bot.reply_on_message(parse_time_and_create_countdown, bot=bot)
     bot.run_bot()
 
