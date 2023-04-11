@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 
 def parse_time_and_create_countdown(chat_id, question, bot):
     time = parse(question)
-    chart = render_progressbar(time, 0)
     message = "Таймер запущен"
     message_id = bot.send_message(chat_id, message)
     bot.create_countdown(
